@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生日蛋糕 · 张思远</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #1e2b3a 0%, #2d3f4e 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+      padding: 1rem;
+    }
+
+    /* 主卡片 —— 让蛋糕更突出 */
+    .cake-wrapper {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(4px);
+      padding: 2.5rem 2rem 2rem 2rem;
+      border-radius: 60px 60px 40px 40px;
+      box-shadow: 0 25px 35px -10px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .cake-wrapper:hover {
+      transform: scale(1.02);
+      box-shadow: 0 30px 45px -8px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 220, 120, 0.3);
+    }
+
+    .cake-wrapper:active {
+      transform: scale(0.99);
+    }
+
+    /* 蛋糕容器，用于定位蜡烛、奶油等 */
+    .cake {
+      position: relative;
+      width: 300px;
+      height: 250px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    /* 蜡烛 */
+    .candle {
+      position: relative;
+      width: 18px;
+      height: 70px;
+      background: linear-gradient(45deg, #ffe78c, #f7c948);
+      border-radius: 10px 10px 4px 4px;
+      box-shadow: inset -2px -2px 5px rgba(0,0,0,0.1), 0 0 15px rgba(255, 200, 50, 0.5);
+      margin-bottom: -4px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    /* 烛芯 + 火焰 */
+    .flame {
+      position: absolute;
+      top: -30px;
+      width: 14px;
+      height: 30px;
+      background: radial-gradient(circle, #ffdd55 0%, #ffaa00 70%, #ff6600 100%);
+      border-radius: 50% 50% 40% 40% / 60% 60% 30% 30%;
+      filter: drop-shadow(0 0 12px #ffb347);
+      animation: flicker 0.4s infinite alternate ease-in-out;
+      transform-origin: center bottom;
+    }
+
+    /* 火苗内焰 */
+    .flame::after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      left: 4px;
+      width: 6px;
+      height: 12px;
+      background: #fff9e0;
+      border-radius: 50%;
+      opacity: 0.8;
+    }
+
+    @keyframes flicker {
+      0% { transform: scale(1) rotate(-1deg); opacity: 0.95; }
+      100% { transform: scale(1.1) rotate(2deg); opacity: 1; }
+    }
+
+    /* 蛋糕主体三层 */
+    .cake-layer {
+      width: 100%;
+      border-radius: 40px 40px 20px 20px;
+      box-shadow: inset 0 8px 10px rgba(255, 255, 255, 0.3), inset 0 -8px 8px rgba(0, 0, 0, 0.15), 0 8px 12px rgba(0, 0, 0, 0.3);
+      position: relative;
+      border-bottom: 3px solid rgba(0, 0, 0, 0.15);
+    }
+
+    /* 顶层 */
+    .layer-top {
+      width: 170px;
+      height: 60px;
+      background: #f9d9b8;
+      background: linear-gradient(145deg, #ffead2, #f7cba5);
+      border-radius: 50px 50px 18px 18px;
+      margin-bottom: -6px;
+      z-index: 5;
+      box-shadow: inset 0 12px 12px rgba(255, 255, 200, 0.7), inset 0 -6px 8px #d49c6b, 0 10px 15px rgba(0, 0, 0, 0.3);
+      border-bottom: 4px solid #e7b68b;
+    }
+
+    /* 奶油装饰 (波浪) */
+    .layer-top::before {
+      content: "";
+      position: absolute;
+      top: -8px;
+      left: 0;
+      width: 100%;
+      height: 22px;
+      background: radial-gradient(circle at 10px 12px, #fff5e6 12px, transparent 13px) 0 0/30px 24px repeat-x;
+      background-size: 30px 24px;
+      opacity: 0.95;
+      border-radius: 20px;
+    }
+
+    /* 中间层 */
+    .layer-mid {
+      width: 220px;
+      height: 65px;
+      background: #f3c6a0;
+      background: linear-gradient(135deg, #fad6b3, #eab887);
+      margin-bottom: -6px;
+      z-index: 4;
+      border-radius: 40px 40px 18px 18px;
+      box-shadow: inset 0 8px 12px #ffeac5, inset 0 -8px 8px #b47d52, 0 8px 12px rgba(0, 0, 0, 0.25);
+      border-bottom: 3px solid #c28f62;
+    }
+
+    /* 奶油花边第二层 */
+    .layer-mid::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 0;
+      width: 100%;
+      height: 24px;
+      background: radial-gradient(circle at 12px 12px, #fff7eb 14px, transparent 15px) 0 0/32px 26px repeat-x;
+      background-size: 32px 26px;
+      opacity: 0.9;
+      border-radius: 30px;
+    }
+
+    /* 底层 */
+    .layer-bottom {
+      width: 280px;
+      height: 75px;
+      background: #e7b68b;
+      background: linear-gradient(145deg, #f7cfad, #d9a16c);
+      border-radius: 40px 40px 25px 25px;
+      z-index: 3;
+      box-shadow: inset 0 10px 14px #ffeacb, inset 0 -10px 10px #a57348, 0 10px 18px rgba(0, 0, 0, 0.35);
+      border-bottom: 4px solid #b58054;
+    }
+
+    .layer-bottom::before {
+      content: "";
+      position: absolute;
+      top: -12px;
+      left: 0;
+      width: 100%;
+      height: 26px;
+      background: radial-gradient(circle at 14px 14px, #fff8ed 16px, transparent 17px) 0 0/36px 28px repeat-x;
+      background-size: 36px 28px;
+      opacity: 0.9;
+      border-radius: 30px;
+    }
+
+    /* 盘子 */
+    .plate {
+      width: 330px;
+      height: 20px;
+      background: radial-gradient(ellipse at 50% 0%, #c0cbd4, #8f9ca8);
+      border-radius: 50%;
+      margin-top: -10px;
+      box-shadow: 0 12px 18px rgba(0, 0, 0, 0.5), inset 0 2px 5px #eef3f7;
+      border-bottom: 3px solid #6b7a88;
+      z-index: 1;
+    }
+
+    /* 小装饰：彩色糖粒 */
+    .sprinkles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    .sprinkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      transform: rotate(45deg);
+      opacity: 0.9;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* 横幅样式 — 点击后出现 */
+    .banner {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
+      background: linear-gradient(135deg, #fddb6a, #f9b83a);
+      color: #2c1e0e;
+      padding: 2rem 3.5rem;
+      border-radius: 100px;
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: 6px;
+      white-space: nowrap;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 6px rgba(255, 215, 100, 0.6), 0 0 0 12px rgba(255, 235, 150, 0.3);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2), transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2), visibility 0.4s;
+      text-shadow: 0 4px 10px rgba(255, 255, 200, 0.8);
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      border: 2px solid #fff3c9;
+      pointer-events: none; /* 让点击穿透，不干扰再次点击蛋糕 */
+    }
+
+    /* 横幅激活状态 */
+    .banner.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* 移动端适配 */
+    @media (max-width: 600px) {
+      .cake-wrapper {
+        padding: 1.5rem 1rem 1rem 1rem;
+        border-radius: 40px;
+      }
+
+      .cake {
+        width: 240px;
+        height: 200px;
+      }
+
+      .candle {
+        width: 14px;
+        height: 55px;
+      }
+
+      .flame {
+        top: -25px;
+        width: 12px;
+        height: 25px;
+      }
+
+      .layer-top {
+        width: 140px;
+        height: 48px;
+      }
+
+      .layer-mid {
+        width: 180px;
+        height: 52px;
+      }
+
+      .layer-bottom {
+        width: 230px;
+        height: 60px;
+      }
+
+      .plate {
+        width: 270px;
+        height: 16px;
+      }
+
+      .banner {
+        font-size: 1.6rem;
+        padding: 1.2rem 1.8rem;
+        letter-spacing: 3px;
+        white-space: nowrap;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .banner {
+        font-size: 1.2rem;
+        padding: 1rem 1.2rem;
+        letter-spacing: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cake-wrapper" id="cakeWrapper" role="button" aria-label="点击蛋糕显示生日祝福" tabindex="0">
+    <div class="cake">
+      <!-- 蜡烛 + 火焰 -->
+      <div class="candle">
+        <div class="flame"></div>
+      </div>
+
+      <!-- 蛋糕顶层 -->
+      <div class="cake-layer layer-top">
+        <!-- 糖粒点缀 -->
+        <div class="sprinkles">
+          <div class="sprinkle" style="top: 12px; left: 20px; background: #ff4d6d;"></div>
+          <div class="sprinkle" style="top: 28px; left: 70px; background: #4ecdc4;"></div>
+          <div class="sprinkle" style="top: 10px; right: 25px; background: #ffe066;"></div>
+          <div class="sprinkle" style="top: 40px; right: 45px; background: #b5838d;"></div>
+          <div class="sprinkle" style="bottom: 10px; left: 50px; background: #6a994e;"></div>
+        </div>
+      </div>
+
+      <!-- 中间层 -->
+      <div class="cake-layer layer-mid">
+        <div class="sprinkles">
+          <div class="sprinkle" style="top: 15px; left: 30px; background: #e63946;"></div>
+          <div class="sprinkle" style="top: 35px; right: 40px; background: #a2d2ff;"></div>
+          <div class="sprinkle" style="bottom: 12px; left: 100px; background: #f9c74f;"></div>
+          <div class="sprinkle" style="top: 20px; right: 70px; background: #f9844a;"></div>
+        </div>
+      </div>
+
+      <!-- 底层 -->
+      <div class="cake-layer layer-bottom">
+        <div class="sprinkles">
+          <div class="sprinkle" style="top: 20px; left: 45px; background: #f94144;"></div>
+          <div class="sprinkle" style="top: 45px; left: 120px; background: #43aa8b;"></div>
+          <div class="sprinkle" style="bottom: 15px; right: 60px; background: #f8961e;"></div>
+          <div class="sprinkle" style="top: 30px; right: 30px; background: #577590;"></div>
+        </div>
+      </div>
+
+      <!-- 盘子 -->
+      <div class="plate"></div>
+    </div>
+  </div>
+
+  <!-- 点击后出现的横幅 -->
+  <div class="banner" id="birthdayBanner">🎂 生日快乐，张思远 🎂</div>
+
+  <script>
+    (function() {
+      const cakeWrapper = document.getElementById('cakeWrapper');
+      const banner = document.getElementById('birthdayBanner');
+
+      // 点击蛋糕显示横幅
+      function showBirthdayBanner() {
+        banner.classList.add('show');
+
+        // 如果希望再次点击蛋糕时重新触发动画 (让横幅先消失再出现？或者保持可见？)
+        // 这里我们让横幅一直显示直到用户再次点击蛋糕时刷新（重新触发出现动画）
+        // 但如果已经显示，再点击会重新触发动画：先移除类再添加，产生轻微闪动效果，更有庆祝感
+        // 但为了不显得突兀，我们可以让每次点击都有“重新弹出”的效果
+        banner.classList.remove('show');
+        // 强制重绘，让浏览器重新计算，这样过渡会再次执行
+        void banner.offsetWidth;
+        banner.classList.add('show');
+
+        // 可选：延时自动隐藏 (如不需要自动隐藏，注释掉下面即可。但点击蛋糕再次弹出不受影响)
+        // 为了庆祝气氛，让横幅持续显示。用户再次点击蛋糕可以重新触发弹跳动画。
+        // 如果想让它几秒后消失，可以启用下面的定时器，但会与重新触发冲突，所以不启用自动消失。
+        // 无限期显示，再次点击重新刷新动画。
+      }
+
+      // 点击事件
+      cakeWrapper.addEventListener('click', showBirthdayBanner);
+
+      // 键盘无障碍: Enter 或 空格 键
+      cakeWrapper.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault(); // 防止页面滚动
+          showBirthdayBanner();
+        }
+      });
+
+      // 如果用户点击横幅本身，不应该有任何操作（但横幅pointer-events: none，所以点击会穿透到body）
+      // 不需要额外处理
+
+      // 额外小细节：页面加载完成后，可以轻微动一下蜡烛？不需要，但可以保持安静
+      // 如果想在页面刚打开时展示欢迎感，可让横幅显示一次？但需求是点击蛋糕才显示，所以不自动显示。
+    })();
+  </script>
+</body>
+</html>
